@@ -64,11 +64,22 @@ fun MainScreen(modifier: Modifier = Modifier, navController: NavController) {
                 IndicatorContent(Modifier.fillMaxWidth().height(8.dp))
             }
         )
-        Button(
-            modifier = Modifier.align(Alignment.End),
-            onClick = {navController.navigate(Screen.Adding.route)}
-        ) {
-            Text("Добавить новое лекарство")
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            ) {
+            Button(
+                modifier = modifier.weight(0.5f),
+                onClick = { navController.navigate(Screen.Medicines.route) }
+            ) {
+                Text("Добавить новое лекарство")
+            }
+            Button(
+                modifier = modifier.weight(0.5f),
+                onClick = { navController.navigate(Screen.Adding.route) }
+            ) {
+                Text("Добавить прием")
+            }
         }
     }
 }

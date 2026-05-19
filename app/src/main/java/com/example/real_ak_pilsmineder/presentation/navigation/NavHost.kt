@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.real_ak_pilsmineder.presentation.screen.AddingScreen
 import com.example.real_ak_pilsmineder.presentation.screen.AuthorizationScreen
 import com.example.real_ak_pilsmineder.presentation.screen.MainScreen
+import com.example.real_ak_pilsmineder.presentation.screen.MedicinesScreen
 
 
 @Composable
@@ -22,6 +23,9 @@ fun PilsNavHost(){
         }
         composable(Screen.Adding.route) {
             AddingScreen(modifier = Modifier, navController)
+        }
+        composable(Screen.Medicines.route) {
+            MedicinesScreen(modifier = Modifier, navController)
         }
     }
 }
