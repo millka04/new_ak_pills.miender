@@ -15,6 +15,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.R
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.example.real_ak_pilsmineder.domain.model.Medication
 import com.example.real_ak_pilsmineder.presentation.theme.ItemColor
@@ -41,12 +44,13 @@ fun MedicationItem(
         ) {
             Text(
                 text = medication.name,
+                color = Color.Black,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.weight(1f)
             )
 
             IconButton(onClick = onEdit) {
-                Icon(Icons.Default.Edit, contentDescription = "Редактировать")
+                Icon(imageVector = Icons.Default.Edit, tint = Color.Black, contentDescription = "Редактировать")
             }
             IconButton(onClick = onDelete) {
                 Icon(Icons.Default.Delete, contentDescription = "Удалить")

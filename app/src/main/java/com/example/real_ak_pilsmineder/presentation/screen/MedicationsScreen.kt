@@ -2,14 +2,11 @@ package com.example.real_ak_pilsmineder.presentation.screen
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -75,9 +72,7 @@ fun MedicationsScreen(viewModel: MedicationViewModel) {
                                 showAddDialog = true
                             },
                             onDelete = {
-                                scope.launch {
-                                    viewModel.deleteMedication(medication)
-                                }
+                                viewModel.deleteMedication(medication)
                             }
                         )
                     }
@@ -103,7 +98,7 @@ fun MedicationsScreen(viewModel: MedicationViewModel) {
                 onDismiss = { showAddDialog = false },
                 onSave = { name ->
                     if (editingMedication != null) {
-                        //viewModel.updateMedication(editingMedication!!.copy(name = name))
+                        viewModel.updateMedication(editingMedication!!.copy(name = name))
                     } else {
                         viewModel.addMedication(name)
                     }
