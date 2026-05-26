@@ -30,6 +30,7 @@ fun SettingsScreen(languageViewModel: LanguageViewModel = viewModel() ) {
 
         Text(
             text = stringResource(id = R.string.current_language, currentLang),
+            color = colorResource(R.color.black),
             modifier = Modifier.padding(16.dp)
         )
         Button(onClick = {

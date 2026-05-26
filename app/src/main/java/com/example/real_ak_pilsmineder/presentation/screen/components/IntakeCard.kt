@@ -12,6 +12,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.R
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.example.real_ak_pilsmineder.presentation.theme.ItemColor
 
@@ -35,8 +38,9 @@ fun IntakeCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(item.medication.name, style = MaterialTheme.typography.titleMedium)
+                Text(item.medication.name, color = Color.Black, style = MaterialTheme.typography.titleMedium)
                 Text(
+                    color = Color.Black,
                     text = "${item.intake.duringDay.toTimeString()} • ${getFrequencyLabel(item.intake.often)}",
                     style = MaterialTheme.typography.bodyMedium
                 )

@@ -1,5 +1,6 @@
 package com.example.real_ak_pilsmineder.data.repository
 
+import android.util.Log
 import com.example.real_ak_pilsmineder.data.local.dao.MedicationDao
 import com.example.real_ak_pilsmineder.data.local.entity.MedicationEntity
 import com.example.real_ak_pilsmineder.domain.model.Medication
@@ -19,6 +20,15 @@ class MedicationRepositoryImpl(
 
     override suspend fun addMedication(medication: Medication) {
         dao.insert(medication.toEntity())
+    }
+
+    override suspend fun updateMedication(medication: Medication) {
+     //   Log.d("LLL","{${medication.}")
+        dao.update(medication.toEntity())
+    }
+
+    override suspend fun deleteMedication(medication: Medication) {
+        dao.delete(medication.toEntity())
     }
 }
 private fun MedicationEntity.toDomain(): Medication = Medication(
