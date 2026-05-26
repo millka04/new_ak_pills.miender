@@ -11,12 +11,12 @@ import com.example.real_ak_pilsmineder.domain.model.Intake
 import com.example.real_ak_pilsmineder.domain.model.Medication
 import com.example.real_ak_pilsmineder.domain.usecase.AddIntakeUseCase
 import com.example.real_ak_pilsmineder.domain.usecase.AddMedicationUseCase
+import com.example.real_ak_pilsmineder.domain.usecase.DeleteIntakeUseCase
 import com.example.real_ak_pilsmineder.domain.usecase.DeleteMedicationUseCase
 import com.example.real_ak_pilsmineder.domain.usecase.GetIntakesForDateUseCase
 import com.example.real_ak_pilsmineder.domain.usecase.GetIntakesUseCase
 import com.example.real_ak_pilsmineder.domain.usecase.GetMedicationsUseCase
 import com.example.real_ak_pilsmineder.domain.usecase.UpdateMedicationUseCase
-import com.example.real_ak_pilsmineder.domain.usecase.deleteIntakeUseCase
 import com.example.real_ak_pilsmineder.utils.NotificationUtils
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -42,7 +42,7 @@ class MedicationViewModel(application: Application) : AndroidViewModel(applicati
     private val updateMedicationUseCase = UpdateMedicationUseCase(medicationRepository)
     private val deleteMedicationUseCase = DeleteMedicationUseCase(medicationRepository)
 
-    private val deleteIntakeUseCase = deleteIntakeUseCase(intakeRepository)
+    private val deleteIntakeUseCase = DeleteIntakeUseCase(intakeRepository)
 
     private val getIntakesForDateUseCase =
         GetIntakesForDateUseCase(intakeRepository, medicationRepository)

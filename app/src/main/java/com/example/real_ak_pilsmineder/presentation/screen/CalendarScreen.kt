@@ -144,9 +144,8 @@ fun CalendarScreen(viewModel: MedicationViewModel) {
                                         showAddDialog = true
                                     },
                                     onDelete = {
-                                        scope.launch {
-                                            viewModel.deleteIntake(item.intake)
-                                        }
+                                        viewModel.deleteIntake(item.intake)
+
                                     }
                                 )
                             }

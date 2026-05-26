@@ -8,6 +8,5 @@ interface MedicationRepository {
     fun getAllMedications(): Flow<List<Medication>>
     suspend fun addMedication(medication: Medication)
     suspend fun updateMedication(medication: Medication)
-
     suspend fun deleteMedication(medication: Medication)
 }
