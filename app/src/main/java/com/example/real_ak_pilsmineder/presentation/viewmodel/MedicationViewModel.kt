@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.real_ak_pilsmineder.data.local.MyDatabase
+import com.example.real_ak_pilsmineder.data.local.dao.MedicationDao
 import com.example.real_ak_pilsmineder.data.repository.IntakeRepositoryImpl
 import com.example.real_ak_pilsmineder.data.repository.MedicationRepositoryImpl
 import com.example.real_ak_pilsmineder.domain.model.Intake
@@ -58,6 +59,20 @@ class MedicationViewModel(application: Application) : AndroidViewModel(applicati
     fun addMedication(name: String) {
         viewModelScope.launch {
             addMedicationUseCase(name)
+        }
+    }
+    fun deleteMedication(medication: Medication) {
+        viewModelScope.launch {
+            try {
+               allIntakes.value
+                   .filter { it.preparatId == medication.id }
+                   .forEach { intake ->
+                       NotificationUtils.cancelAlarm(getApplication(), intake.id)
+                   }
+                medicationRepository.deleteMedication(medication)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
