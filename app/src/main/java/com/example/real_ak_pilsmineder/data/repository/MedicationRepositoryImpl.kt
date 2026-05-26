@@ -20,6 +20,10 @@ class MedicationRepositoryImpl(
     override suspend fun addMedication(medication: Medication) {
         dao.insert(medication.toEntity())
     }
+
+    override suspend fun deleteMedication(medication: Medication) {
+        dao.deleteById(medication.id)
+    }
 }
 private fun MedicationEntity.toDomain(): Medication = Medication(
     id = id,

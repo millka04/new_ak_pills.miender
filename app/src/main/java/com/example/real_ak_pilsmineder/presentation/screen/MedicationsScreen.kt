@@ -76,7 +76,7 @@ fun MedicationsScreen(viewModel: MedicationViewModel) {
                             },
                             onDelete = {
                                 scope.launch {
-                                    //viewModel.deleteMedication(medication)
+                                    viewModel.deleteMedication(medication)
                                 }
                             }
                         )
