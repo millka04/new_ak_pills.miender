@@ -6,9 +6,9 @@ import com.example.real_ak_pilsmineder.domain.repository.MedicationRepository
 class UpdateMedicationUseCase(
     private val repository: MedicationRepository
 ) {
-    suspend operator fun invoke(name: String) {
+    suspend operator fun invoke(medication: Medication) {
         repository.updateMedication(
-            Medication(name = name)
+            medication
         )
     }
 }

@@ -20,6 +20,10 @@ class IntakeRepositoryImpl(
     override suspend fun addIntake(intake: Intake): Long {
         return dao.insert(intake.toEntity())
     }
+
+    override suspend fun deleteIntake(intake: Intake) {
+        return dao.delete(intake.toEntity())
+    }
 }
 
 private fun IntakeEntity.toDomain(): Intake = Intake(
