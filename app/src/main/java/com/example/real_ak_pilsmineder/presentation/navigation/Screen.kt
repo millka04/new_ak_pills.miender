@@ -1,8 +1,7 @@
 package com.example.real_ak_pilsmineder.presentation.navigation
 
-sealed class Screen(val route: String) {
-    object Auth: Screen("auth")
-    object Main: Screen("main")
-    object Reg: Screen("reg")
-    object Adding: Screen("adding")
+sealed class Screen(val route: String, val label: String) {
+    object Calendar : Screen("calendar", "Приём")
+    object Medications : Screen("meds", "Препараты")
+    object Settings : Screen("settings", "Настройки")
 }

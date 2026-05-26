@@ -1,3 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">real_ ak_pils.mineder</string>
+    <string name="app_name">Приём лекарств</string>
+
+    <string name="screen_calendar">Приём</string>
+    <string name="screen_medications">Препараты</string>
+    <string name="screen_settings">Настройки</string>
+
+    <string name="settings_title">Настройки</string>
+    <string name="settings_language">Язык приложения</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_english">English</string>
+    <string name="current_language">Текущий язык: %s</string>
+
+    <string name="add">Добавить</string>
+    <string name="edit">Редактировать</string>
+    <string name="delete">Удалить</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
+
+    <string name="intakes_for_day">Приёмы на %s</string>
+    <string name="no_intakes">На этот день нет приёмов</string>
+    <string name="add_intake">Добавить приём</string>
+    <string name="change_language">Сменить язык</string>
 </resources>
