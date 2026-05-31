@@ -3,6 +3,7 @@ package com.example.real_ak_pilsmineder.data.repository
 import com.example.real_ak_pilsmineder.data.local.dao.IntakeDao
 import com.example.real_ak_pilsmineder.data.local.entity.IntakeEntity
 import com.example.real_ak_pilsmineder.domain.model.Intake
+import com.example.real_ak_pilsmineder.domain.model.Medication
 import com.example.real_ak_pilsmineder.domain.repository.IntakeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -23,6 +24,10 @@ class IntakeRepositoryImpl(
 
     override suspend fun deleteIntake(intake: Intake) {
         return dao.delete(intake.toEntity())
+    }
+
+    override suspend fun updateIntake(intake: Intake) {
+        dao.update(intake.toEntity())
     }
 }
 

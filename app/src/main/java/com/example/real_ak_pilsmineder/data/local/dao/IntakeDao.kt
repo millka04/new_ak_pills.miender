@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.real_ak_pilsmineder.data.local.entity.IntakeEntity
 import com.example.real_ak_pilsmineder.data.local.entity.MedicationEntity
 import com.example.real_ak_pilsmineder.domain.model.Intake
@@ -20,4 +21,7 @@ interface IntakeDao {
 
     @Delete
     suspend fun delete(entity: IntakeEntity)
+
+    @Update
+    suspend fun update(entity: IntakeEntity)
 }

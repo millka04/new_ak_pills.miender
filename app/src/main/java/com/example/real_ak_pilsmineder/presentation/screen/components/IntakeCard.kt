@@ -45,8 +45,8 @@ fun IntakeCard(
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
-            IconButton(onClick = onEdit) { Icon(Icons.Default.Edit, null) }
-            IconButton(onClick = onDelete) { Icon(Icons.Default.Delete, null) }
+            IconButton(onClick = onEdit) { Icon(Icons.Default.Edit, null, tint = Color.Black,) }
+            IconButton(onClick = onDelete) { Icon(Icons.Default.Delete, null, tint = Color.Black,) }
         }
     }
 }

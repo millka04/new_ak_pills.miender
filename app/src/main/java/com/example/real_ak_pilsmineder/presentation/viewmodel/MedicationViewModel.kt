@@ -17,6 +17,7 @@ import com.example.real_ak_pilsmineder.domain.usecase.DeleteMedicationUseCase
 import com.example.real_ak_pilsmineder.domain.usecase.GetIntakesForDateUseCase
 import com.example.real_ak_pilsmineder.domain.usecase.GetIntakesUseCase
 import com.example.real_ak_pilsmineder.domain.usecase.GetMedicationsUseCase
+import com.example.real_ak_pilsmineder.domain.usecase.UpdateIntakeUseCase
 import com.example.real_ak_pilsmineder.domain.usecase.UpdateMedicationUseCase
 import com.example.real_ak_pilsmineder.utils.NotificationUtils
 import kotlinx.coroutines.flow.*
@@ -44,6 +45,7 @@ class MedicationViewModel(application: Application) : AndroidViewModel(applicati
     private val deleteMedicationUseCase = DeleteMedicationUseCase(medicationRepository)
 
     private val deleteIntakeUseCase = DeleteIntakeUseCase(intakeRepository)
+    private val updateIntakeUseCase = UpdateIntakeUseCase(intakeRepository)
 
     private val getIntakesForDateUseCase =
         GetIntakesForDateUseCase(intakeRepository, medicationRepository)
@@ -61,7 +63,7 @@ class MedicationViewModel(application: Application) : AndroidViewModel(applicati
             addMedicationUseCase(name)
         }
     }
-    fun deleteMedication(medication: Medication) {
+    /*fun deleteMedication(medication: Medication) {
         viewModelScope.launch {
             try {
                allIntakes.value
@@ -74,7 +76,7 @@ class MedicationViewModel(application: Application) : AndroidViewModel(applicati
                 e.printStackTrace()
             }
         }
-    }
+    }*/
 
     fun updateMedication(medication: Medication) {
         viewModelScope.launch {
@@ -115,6 +117,12 @@ class MedicationViewModel(application: Application) : AndroidViewModel(applicati
     fun deleteIntake(intake: Intake) {
         viewModelScope.launch {
             deleteIntakeUseCase(intake)
+        }
+    }
+
+    fun updateIntake(intake: Intake) {
+        viewModelScope.launch {
+            updateIntakeUseCase(intake)
         }
     }
 

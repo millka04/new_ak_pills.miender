@@ -9,4 +9,5 @@ interface IntakeRepository {
     fun getAllIntakes(): Flow<List<Intake>>
     suspend fun addIntake(intake: Intake): Long
     suspend fun deleteIntake(intake: Intake)
+    suspend fun updateIntake(intake: Intake)
 }

@@ -92,7 +92,7 @@ fun SimpleMonthCalendar(
                 ) {
                     Text(
                         text = day.toString(),
-                        color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Black,
+                        color = if (isSelected) MaterialTheme.colorScheme.onSecondary else Color.Black,
                         style = MaterialTheme.typography.bodyMedium
                     )
 

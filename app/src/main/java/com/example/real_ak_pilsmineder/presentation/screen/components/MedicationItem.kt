@@ -53,7 +53,7 @@ fun MedicationItem(
                 Icon(imageVector = Icons.Default.Edit, tint = Color.Black, contentDescription = "Редактировать")
             }
             IconButton(onClick = onDelete) {
-                Icon(Icons.Default.Delete, contentDescription = "Удалить")
+                Icon(Icons.Default.Delete, tint = Color.Black, contentDescription = "Удалить")
             }
         }
     }
