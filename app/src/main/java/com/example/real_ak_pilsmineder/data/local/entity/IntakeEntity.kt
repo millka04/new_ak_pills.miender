@@ -18,5 +18,6 @@ data class IntakeEntity(
     val preparat_id: Long,
     val during_day: Int,
     val often: String,
-    val weekday: String
+    val weekday: String,
+    val date: String? = null
 )

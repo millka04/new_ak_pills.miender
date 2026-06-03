@@ -57,5 +57,6 @@ fun getFrequencyLabel(often: String): String = when (often.lowercase()) {
     "everyday", "every" -> "Каждый день"
     "everyweek" -> "Каждую неделю"
     "everymonth" -> "Каждый месяц"
+    "once" -> "Одноразово"
     else -> often
 }

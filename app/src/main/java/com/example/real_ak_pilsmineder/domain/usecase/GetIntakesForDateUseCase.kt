@@ -31,11 +31,11 @@ class GetIntakesForDateUseCase(
     }
 
     private fun isApplicable(intake: Intake, date: LocalDate): Boolean {
+        if (intake.often == "once") {
+            return intake.date == date
+        }
 
-        // 1. Проверяем, что строка weekday корректная
         if (intake.weekday.length != 7) return false
-
-        // 2. Определяем индекс дня недели (0 = Понедельник)
         val dayIndex = when (date.dayOfWeek) {
             DayOfWeek.MONDAY -> 0
             DayOfWeek.TUESDAY -> 1
@@ -45,16 +45,9 @@ class GetIntakesForDateUseCase(
             DayOfWeek.SATURDAY -> 5
             DayOfWeek.SUNDAY -> 6
         }
-
-        // 3. Проверяем, выбран ли этот день недели
         if (intake.weekday[dayIndex] != '1') return false
-
-        // 4. Проверяем частоту
-        return when (intake.often.lowercase().trim()) {
-            "everyday", "every" -> true
-            "everyweek" -> true
-            "everymonth" -> true                    // упрощённо
-            "once" -> false                         // одноразовые пока не поддерживаем
+        return when (intake.often.lowercase()) {
+            "everyday", "every", "everyweek", "everymonth" -> true
             else -> false
         }
     }

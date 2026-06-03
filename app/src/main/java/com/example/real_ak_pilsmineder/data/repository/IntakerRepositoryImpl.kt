@@ -7,6 +7,7 @@ import com.example.real_ak_pilsmineder.domain.model.Medication
 import com.example.real_ak_pilsmineder.domain.repository.IntakeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.time.LocalDate
 
 
 class IntakeRepositoryImpl(
@@ -36,7 +37,8 @@ private fun IntakeEntity.toDomain(): Intake = Intake(
     preparatId = preparat_id,
     duringDay = during_day,
     often = often,
-    weekday = weekday
+    weekday = weekday,
+    date = date?.let { LocalDate.parse(it) }
 )
 
 private fun Intake.toEntity(): IntakeEntity = IntakeEntity(
@@ -44,5 +46,6 @@ private fun Intake.toEntity(): IntakeEntity = IntakeEntity(
     preparat_id = preparatId,
     during_day = duringDay,
     often = often,
-    weekday = weekday
+    weekday = weekday,
+    date = date?.toString()
 )

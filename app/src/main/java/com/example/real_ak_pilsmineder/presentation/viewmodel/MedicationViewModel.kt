@@ -103,6 +103,7 @@ class MedicationViewModel(application: Application) : AndroidViewModel(applicati
                     minute = intake.duringDay % 60
                 )
             } else {
+                updateIntake(intake)
                 NotificationUtils.cancelAlarm(getApplication(), intake.id)
                 NotificationUtils.scheduleAlarm(
                     context = getApplication(),

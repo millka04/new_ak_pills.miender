@@ -38,7 +38,6 @@ fun SettingsScreen(languageViewModel: LanguageViewModel = viewModel() ) {
             languageViewModel.changeLanguage(newLang)
             Log.d("RRR",newLang)
         }) {
-
             Text(text = stringResource(id = R.string.change_language))
         }
     }

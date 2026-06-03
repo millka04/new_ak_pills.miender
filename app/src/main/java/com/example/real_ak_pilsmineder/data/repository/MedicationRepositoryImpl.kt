@@ -23,7 +23,6 @@ class MedicationRepositoryImpl(
     }
 
     override suspend fun updateMedication(medication: Medication) {
-     //   Log.d("LLL","{${medication.}")
         dao.update(medication.toEntity())
     }
 

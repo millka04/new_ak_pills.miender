@@ -63,16 +63,20 @@ fun CalendarScreen(viewModel: MedicationViewModel) {
 
                 val dayIntakes = allIntakes
                     .filter { intake ->
-                        intake.weekday.length == 7 &&
-                                intake.weekday[when (current.dayOfWeek) {
-                                    java.time.DayOfWeek.MONDAY -> 0
-                                    java.time.DayOfWeek.TUESDAY -> 1
-                                    java.time.DayOfWeek.WEDNESDAY -> 2
-                                    java.time.DayOfWeek.THURSDAY -> 3
-                                    java.time.DayOfWeek.FRIDAY -> 4
-                                    java.time.DayOfWeek.SATURDAY -> 5
-                                    java.time.DayOfWeek.SUNDAY -> 6
-                                }] == '1'
+                        if (intake.often == "once") {
+                            intake.date == current
+                        } else {
+                            intake.weekday.length == 7 &&
+                                    intake.weekday[when (current.dayOfWeek) {
+                                        java.time.DayOfWeek.MONDAY -> 0
+                                        java.time.DayOfWeek.TUESDAY -> 1
+                                        java.time.DayOfWeek.WEDNESDAY -> 2
+                                        java.time.DayOfWeek.THURSDAY -> 3
+                                        java.time.DayOfWeek.FRIDAY -> 4
+                                        java.time.DayOfWeek.SATURDAY -> 5
+                                        java.time.DayOfWeek.SUNDAY -> 6
+                                    }] == '1'
+                        }
                     }
                     .mapNotNull { intake ->
                         medMap[intake.preparatId]?.let { med ->

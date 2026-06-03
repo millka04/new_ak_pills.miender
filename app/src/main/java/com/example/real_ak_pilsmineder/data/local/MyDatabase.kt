@@ -12,7 +12,7 @@ import com.example.real_ak_pilsmineder.data.local.entity.MedicationEntity
 
 @Database(
     entities = [MedicationEntity::class, IntakeEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class MyDatabase : RoomDatabase() {

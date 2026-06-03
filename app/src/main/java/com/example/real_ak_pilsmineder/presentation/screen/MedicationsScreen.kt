@@ -106,9 +106,5 @@ fun MedicationsScreen(viewModel: MedicationViewModel) {
                 }
             )
         }
-
     }
-
-
-
 }

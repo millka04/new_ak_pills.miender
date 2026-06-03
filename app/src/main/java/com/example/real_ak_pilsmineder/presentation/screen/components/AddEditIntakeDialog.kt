@@ -18,6 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.time.LocalDate
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,23 +32,40 @@ fun AddEditIntakeDialog(
     onSave: (Intake) -> Unit
 ) {
     val context = LocalContext.current
+    val today = LocalDate.now()
 
     var selectedMedId by remember {
         mutableStateOf(intakeWithMed?.medication?.id ?: medications.firstOrNull()?.id ?: 0L)
     }
     var duringDay by remember {
-        mutableStateOf(intakeWithMed?.intake?.duringDay ?: (8 * 60))
+        mutableStateOf(intakeWithMed?.intake?.duringDay ?: (9 * 60))
     }
     var often by remember {
         mutableStateOf(intakeWithMed?.intake?.often ?: "everyday")
     }
     var weekday by remember {
-        mutableStateOf(intakeWithMed?.intake?.weekday ?: "1111100")
+        mutableStateOf(intakeWithMed?.intake?.weekday ?: "0000000")
+    }
+    var selectedDate by remember {
+        mutableStateOf(intakeWithMed?.intake?.date ?: today)
     }
 
     var showTimePicker by remember { mutableStateOf(false) }
+    var showDatePicker by remember { mutableStateOf(false) }
     var expandedMed by remember { mutableStateOf(false) }
     var expandedOften by remember { mutableStateOf(false) }
+
+    val isOneTime = often == "once"
+
+    val timePickerState = rememberTimePickerState(
+        initialHour = duringDay / 60,
+        initialMinute = duringDay % 60,
+        is24Hour = true
+    )
+
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = selectedDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+    )
 
     val frequencyOptions = listOf(
         "everyday" to "Каждый день",
@@ -96,20 +117,6 @@ fun AddEditIntakeDialog(
                     Text("Время: ${duringDay.toTimeString()}")
                 }
 
-                if (showTimePicker) {
-                    TimePickerDialog(
-                        context,
-                        { _, hour, minute ->
-                            duringDay = hour * 60 + minute
-                            showTimePicker = false
-                        },
-                        duringDay / 60,
-                        duringDay % 60,
-                        true
-                    ).show()
-                    showTimePicker = false
-                }
-
                 Spacer(modifier = Modifier.height(12.dp))
 
                 ExposedDropdownMenuBox(
@@ -139,27 +146,38 @@ fun AddEditIntakeDialog(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-                Text("Дни недели:", style = MaterialTheme.typography.labelMedium)
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс").forEachIndexed { index, label ->
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            // убираем 48dp для размера по умолчанию
-                            CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 10.dp) {
-                                Checkbox(
-                                    checked = weekday.getOrNull(index) == '1',
-                                    onCheckedChange = { isChecked ->
-                                        val chars = weekday.toCharArray()
-                                        chars[index] = if (isChecked) '1' else '0'
-                                        weekday = String(chars)
-                                    }
-                                )
+                if (isOneTime) {
+                    Text("Дата приёма:", style = MaterialTheme.typography.labelMedium)
+                    OutlinedButton(
+                        onClick = { showDatePicker = true },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            selectedDate.format(DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("ru")))
+                        )
+                    }
+                } else {
+                    Text("Дни недели:", style = MaterialTheme.typography.labelMedium)
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс").forEachIndexed { index, label ->
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 10.dp) {
+                                    Checkbox(
+                                        checked = weekday.getOrNull(index) == '1',
+                                        onCheckedChange = { checked ->
+                                            val chars = weekday.toCharArray()
+                                            chars[index] = if (checked) '1' else '0'
+                                            weekday = String(chars)
+                                        }
+                                    )
+                                }
+                                Text(label, fontSize = 8.sp)
                             }
-                            Text(label, fontSize = 8.sp)
                         }
                     }
                 }
@@ -168,15 +186,16 @@ fun AddEditIntakeDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    if (weekday.all { it == '0' }) {
+                    if (!isOneTime && weekday.all { it == '0' }) {
                         return@TextButton
                     }
                     val newIntake = Intake(
-                        id = intakeWithMed?.intake?.id ?: 0,
+                        id = intakeWithMed?.intake?.id ?: 0L,
                         preparatId = selectedMedId,
                         duringDay = duringDay,
                         often = often,
-                        weekday = weekday
+                        weekday = if (isOneTime) "0000000" else weekday,
+                        date = if (isOneTime) selectedDate else null
                     )
                     onSave(newIntake)
                 }
@@ -190,4 +209,42 @@ fun AddEditIntakeDialog(
             }
         }
     )
+    if (showTimePicker) {
+        AlertDialog(
+            onDismissRequest = { showTimePicker = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    duringDay = timePickerState.hour * 60 + timePickerState.minute
+                    showTimePicker = false
+                }) { Text("OK") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showTimePicker = false }) { Text("Отмена") }
+            },
+            text = {
+                TimePicker(state = timePickerState)
+            }
+        )
+    }
+
+    if (showDatePicker) {
+        DatePickerDialog(
+            onDismissRequest = { showDatePicker = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    datePickerState.selectedDateMillis?.let { millis ->
+                        selectedDate = java.time.Instant.ofEpochMilli(millis)
+                            .atZone(ZoneOffset.UTC)
+                            .toLocalDate()
+                    }
+                    showDatePicker = false
+                }) { Text("OK") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDatePicker = false }) { Text("Отмена") }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
 }
