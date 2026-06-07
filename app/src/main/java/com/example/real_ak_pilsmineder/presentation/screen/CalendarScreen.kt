@@ -67,7 +67,7 @@ fun CalendarScreen(viewModel: MedicationViewModel) {
                             intake.date == current
                         }
                         else if (intake.often == "everyday") {
-                            (intake.date != null) && (intake.date <= current) && (current <= intake.date.plusDays(intake.length.toLong()))
+                            (intake.date != null) && (intake.date <= current) && (current <= intake.date.plusDays((intake.length-1).toLong()))
                         }
                         else if (intake.often == "everymonth") {
                             val start = intake.date

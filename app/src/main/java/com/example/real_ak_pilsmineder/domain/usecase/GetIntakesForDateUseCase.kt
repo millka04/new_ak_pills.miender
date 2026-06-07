@@ -35,7 +35,7 @@ class GetIntakesForDateUseCase(
             return intake.date == date
         }
         else if (intake.often == "everyday") {
-            if ((intake.date != null) && (intake.date <= date) && (date <= intake.date.plusDays(intake.length.toLong()))){
+            if ((intake.date != null) && (intake.date <= date) && (date <= intake.date.plusDays((intake.length-1).toLong()))){
                 return true
             }
             else { return false }
