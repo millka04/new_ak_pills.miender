@@ -10,14 +10,17 @@ import com.example.real_ak_pilsmineder.domain.model.Medication
 import android.app.TimePickerDialog
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -55,7 +58,11 @@ fun AddEditIntakeDialog(
     var expandedMed by remember { mutableStateOf(false) }
     var expandedOften by remember { mutableStateOf(false) }
 
+    var length by remember { mutableStateOf("")}
+
     val isOneTime = often == "once"
+    val isEveryweekTime = often == "everyweek"
+    val isEverymonthTime = often == "everymonth"
 
     val timePickerState = rememberTimePickerState(
         initialHour = duringDay / 60,
@@ -158,7 +165,8 @@ fun AddEditIntakeDialog(
                             selectedDate.format(DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("ru")))
                         )
                     }
-                } else {
+                }
+                else if (isEveryweekTime) {
                     Text("Дни недели:", style = MaterialTheme.typography.labelMedium)
                     Row(
                         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -181,12 +189,37 @@ fun AddEditIntakeDialog(
                         }
                     }
                 }
+                else  {
+                    Text("Принимать в течении:", style = MaterialTheme.typography.labelMedium)
+                    OutlinedTextField(
+                        value = length,
+                        onValueChange = { length = it.filter { it.isDigit() } },
+                        modifier = Modifier,
+                        label = { Text("Количество дней приема") },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        ),
+                        singleLine = true
+                    )
+                    Text("Дата приёма:", style = MaterialTheme.typography.labelMedium)
+                    OutlinedButton(
+                        onClick = { showDatePicker = true },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            selectedDate.format(DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("ru")))
+                        )
+                    }
+                }
             }
         },
         confirmButton = {
             TextButton(
                 onClick = {
-                    if (!isOneTime && weekday.all { it == '0' }) {
+                    if (isEveryweekTime && weekday.all { it == '0' }) {
+                        return@TextButton
+                    }
+                    if (isEverymonthTime && length.toInt() > 28) {
                         return@TextButton
                     }
                     val newIntake = Intake(
@@ -194,8 +227,9 @@ fun AddEditIntakeDialog(
                         preparatId = selectedMedId,
                         duringDay = duringDay,
                         often = often,
-                        weekday = if (isOneTime) "0000000" else weekday,
-                        date = if (isOneTime) selectedDate else null
+                        weekday = if (isOneTime) "0000000" else if (isEveryweekTime) weekday else "0000000",
+                        date = if (isEveryweekTime) null else selectedDate,
+                        length = if (isOneTime) 1 else if (isEveryweekTime) 0 else length.toInt()
                     )
                     onSave(newIntake)
                 }
@@ -233,7 +267,7 @@ fun AddEditIntakeDialog(
             confirmButton = {
                 TextButton(onClick = {
                     datePickerState.selectedDateMillis?.let { millis ->
-                        selectedDate = java.time.Instant.ofEpochMilli(millis)
+                        selectedDate = Instant.ofEpochMilli(millis)
                             .atZone(ZoneOffset.UTC)
                             .toLocalDate()
                     }

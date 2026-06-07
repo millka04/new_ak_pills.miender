@@ -34,6 +34,34 @@ class GetIntakesForDateUseCase(
         if (intake.often == "once") {
             return intake.date == date
         }
+        else if (intake.often == "everyday") {
+            if ((intake.date != null) && (intake.date <= date) && (date <= intake.date.plusDays(intake.length.toLong()))){
+                return true
+            }
+            else { return false }
+        }
+        else if (intake.often == "everymonth") {
+            val start = intake.date
+            if (start == null) {
+                return false
+            }
+            else {
+                val monthsBetween = (date.year - start.year) * 12 + (date.monthValue - start.monthValue)
+                if (monthsBetween < 0) {
+                    return false
+                }
+                else {
+                    val cycleStart = start.plusMonths(monthsBetween.toLong())
+                    val cycleEnd =
+                        cycleStart.plusDays((intake.length - 1).toLong())
+
+                    if ((date >= cycleStart) && (date <= cycleEnd)) {
+                        return true
+                    }
+                    else { return false }
+                }
+            }
+        }
 
         if (intake.weekday.length != 7) return false
         val dayIndex = when (date.dayOfWeek) {
@@ -47,7 +75,7 @@ class GetIntakesForDateUseCase(
         }
         if (intake.weekday[dayIndex] != '1') return false
         return when (intake.often.lowercase()) {
-            "everyday", "every", "everyweek", "everymonth" -> true
+            "every", "everyweek" -> true
             else -> false
         }
     }

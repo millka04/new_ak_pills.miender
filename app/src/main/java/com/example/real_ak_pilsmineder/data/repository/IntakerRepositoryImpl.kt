@@ -38,7 +38,8 @@ private fun IntakeEntity.toDomain(): Intake = Intake(
     duringDay = during_day,
     often = often,
     weekday = weekday,
-    date = date?.let { LocalDate.parse(it) }
+    date = date?.let { LocalDate.parse(it) },
+    length = length
 )
 
 private fun Intake.toEntity(): IntakeEntity = IntakeEntity(
@@ -47,5 +48,6 @@ private fun Intake.toEntity(): IntakeEntity = IntakeEntity(
     during_day = duringDay,
     often = often,
     weekday = weekday,
-    date = date?.toString()
+    date = date?.toString(),
+    length = length
 )

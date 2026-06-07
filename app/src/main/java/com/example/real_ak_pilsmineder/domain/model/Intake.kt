@@ -8,5 +8,6 @@ data class Intake(
     val duringDay: Int,
     val often: String,
     val weekday: String,
-    val date: LocalDate? = null
+    val date: LocalDate? = null,
+    val length: Int
 )

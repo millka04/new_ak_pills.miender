@@ -19,5 +19,6 @@ data class IntakeEntity(
     val during_day: Int,
     val often: String,
     val weekday: String,
-    val date: String? = null
+    val date: String? = null,
+    val length: Int
 )

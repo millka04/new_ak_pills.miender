@@ -65,7 +65,30 @@ fun CalendarScreen(viewModel: MedicationViewModel) {
                     .filter { intake ->
                         if (intake.often == "once") {
                             intake.date == current
-                        } else {
+                        }
+                        else if (intake.often == "everyday") {
+                            (intake.date != null) && (intake.date <= current) && (current <= intake.date.plusDays(intake.length.toLong()))
+                        }
+                        else if (intake.often == "everymonth") {
+                            val start = intake.date
+                            if (start == null) {
+                                false
+                            }
+                            else {
+                                val monthsBetween = (current.year - start.year) * 12 + (current.monthValue - start.monthValue)
+                                if (monthsBetween < 0) {
+                                    false
+                                }
+                                else {
+                                    val cycleStart = start.plusMonths(monthsBetween.toLong())
+                                    val cycleEnd =
+                                        cycleStart.plusDays((intake.length - 1).toLong())
+
+                                    (current >= cycleStart) && (current <= cycleEnd)
+                                }
+                            }
+                        }
+                        else {
                             intake.weekday.length == 7 &&
                                     intake.weekday[when (current.dayOfWeek) {
                                         java.time.DayOfWeek.MONDAY -> 0
@@ -192,7 +215,5 @@ fun CalendarScreen(viewModel: MedicationViewModel) {
             }
 
         }
-}
-
-
+    }
 }
