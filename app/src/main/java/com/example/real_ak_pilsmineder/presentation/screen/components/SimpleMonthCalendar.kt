@@ -69,7 +69,21 @@ fun SimpleMonthCalendar(
 
         val firstDayOffset = currentMonth.atDay(1).dayOfWeek.value - 1
         val daysInMonth = currentMonth.lengthOfMonth()
-        val colors = listOf(Color(0xFFE53935), Color(0xFF1E88E5), Color(0xFF43A047), Color(0xFF8E24AA), Color(0xFFFB8C00))
+        val colors = listOf(
+            Color(0xFFFB8C00),
+            Color(0xFFD81B60),
+            Color(0xFF8E24AA),
+            Color(0xFF3949AB),
+            Color(0xFF1E88E5),
+            Color(0xFF00897B),
+            Color(0xFF43A047),
+            Color(0xFF7CB342),
+            Color(0xFFC0CA33),
+            Color(0xFFFFC107),
+            Color(0xFFF4511E),
+            Color(0xFFE53935),
+            Color(0xFF6D4C41),
+            Color(0xFF546E7A))
 
         LazyVerticalGrid(columns = GridCells.Fixed(7), modifier = Modifier.height(280.dp)) {
             items(firstDayOffset) { Box(Modifier.size(40.dp)) }
@@ -103,11 +117,12 @@ fun SimpleMonthCalendar(
                                 .offset(y = (-3).dp),
                             horizontalArrangement = Arrangement.spacedBy(2.dp)
                         ) {
-                            dayIntakes.take(3).forEachIndexed { i, _ ->
+                            dayIntakes.take(3).forEach { intake ->
+                                val colorIndex = ((intake.medication.id-1) % colors.size).toInt()
                                 Box(
                                     modifier = Modifier
                                         .size(5.dp)
-                                        .background(colors[i % colors.size], CircleShape)
+                                        .background(colors[colorIndex], CircleShape)
                                 )
                             }
                         }
